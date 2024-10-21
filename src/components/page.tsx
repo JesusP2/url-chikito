@@ -7,6 +7,7 @@ import crc32 from 'crc/crc32';
 import { useState } from 'react';
 import { Copy, Check } from "lucide-react"
 import { PUBLIC_URL } from 'astro:env/client';
+import { LinkPreview } from './ui/link-preview';
 
 const words = [
   {
@@ -50,12 +51,17 @@ const placeholders = [
 
 
 export default function Home() {
-  const [hash, setHash] = useState('')
+  const [previewData, setPreviewData] = useState<{
+    hash: string;
+    title: string | null;
+    screenshot: string;
+    description: string;
+  } | null>(null)
   const [isCopied, setIsCopied] = useState(false)
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(`${PUBLIC_URL}/${hash}`)
+      await navigator.clipboard.writeText(`${PUBLIC_URL}/${previewData?.hash}`)
       setIsCopied(true)
       setTimeout(() => setIsCopied(false), 2000) // Reset after 2 seconds
     } catch (err) {
@@ -80,13 +86,17 @@ export default function Home() {
           e.preventDefault();
           const formData = new FormData(e.currentTarget)
           const url = formData.get('url') as string;
-          const { data: hash, error } = await actions.shortenUrl({
+          const { data, error } = await actions.shortenUrl({
             url,
           })
-          console.log(hash, error)
-          if (hash) {
-            setHash(hash)
+          if ((data && data.error)) {
+            console.error(data.error)
+            return;
+          } else if (error) {
+            console.error(error)
+            return;
           }
+          setPreviewData(data as any)
         }}
       >
         <PlaceholdersAndVanishInput
@@ -95,14 +105,14 @@ export default function Home() {
       </form>
       <div className={cn({
         "flex flex-col items-center mt-4 gap-x-4 gap-y-4 invisible": true,
-        "visible": !!hash,
+        "visible": !!previewData,
       })}>
         <div className="flex items-center gap-x-4">
           <input
             type="text"
             disabled
             className="rounded-lg border border-neutral-800 max-w-[270px] w-full p-2 px-4 bg-neutral-950 text-stone-300 placeholder:text-neutral-700"
-            value={`${PUBLIC_URL}/${hash}`}
+            value={`${PUBLIC_URL}/${previewData?.hash}`}
           />
           <button
             onClick={copyToClipboard}
@@ -116,12 +126,20 @@ export default function Home() {
             )}
           </button>
         </div>
+        <LinkPreview
+          url={`data:image/jpeg;base64,${previewData?.screenshot}`}
+          isStatic
+          imageSrc={`data:image/jpeg;base64,${previewData?.screenshot}`}
+          className="font-bold"
+        >
+          {`${PUBLIC_URL}/${previewData?.hash}`}
+        </LinkPreview>
         <button
-          onClick={() => setHash('')}
+          onClick={() => setPreviewData(null)}
           className="inline-flex w-[200px] h-[42px] px-3 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
           Shorten another
         </button>
       </div>
-    </BackgroundBeamsWithCollision>
+    </BackgroundBeamsWithCollision >
   );
 }

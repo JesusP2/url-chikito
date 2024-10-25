@@ -11,10 +11,6 @@ export const BackgroundBeamsWithCollision = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
-  const [windowSize, setWindowSize] = useState({
-    height: 0,
-    width: 0,
-  })
 
   const beams = [
     {
@@ -69,27 +65,11 @@ export const BackgroundBeamsWithCollision = ({
     },
   ];
 
-  useEffect(() => {
-    setWindowSize({
-      height: window.innerHeight,
-      width: window.innerWidth,
-    });
-    window.addEventListener('resize', () => {
-      setWindowSize({
-        height: window.innerHeight,
-        width: window.innerWidth,
-      });
-    });
-  }, [])
-
   return (
     <div
       ref={parentRef}
-      style={{
-        height: windowSize.height
-      }}
       className={cn(
-        "bg-gradient-to-b from-white to-stone-100 dark:from-stone-950 dark:to-stone-900 relative flex items-center w-full justify-center overflow-hidden",
+        "bg-gradient-to-b from-white to-stone-100 dark:from-stone-950 dark:to-stone-900 relative flex items-center w-full justify-center overflow-hidden h-screen",
         // h-screen if you want bigger
         className
       )}

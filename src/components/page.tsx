@@ -3,7 +3,7 @@ import { PlaceholdersAndVanishInput } from './ui/placeholder-and-vanish-input';
 import { TypewriterEffectSmooth } from './ui/typewriter-effect';
 import { actions } from 'astro:actions';
 import { cn } from '../lib/utils';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Copy, Check } from "lucide-react"
 import { PUBLIC_URL } from 'astro:env/client';
 import { LinkPreview } from './ui/link-preview';
@@ -49,6 +49,18 @@ const placeholders = [
 ];
 
 
+function Layout({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <div className="block md:hidden bg-gradient-to-b from-white to-stone-100 dark:from-stone-950 dark:to-stone-900 relative flex items-center w-full justify-center overflow-hidden flex flex-col px-10 h-screen">
+        {children}
+      </div>
+      <BackgroundBeamsWithCollision className="flex-col px-10 hidden md:flex">
+        {children}
+      </BackgroundBeamsWithCollision>
+    </>
+  )
+}
 export default function Home() {
   const [previewData, setPreviewData] = useState<{
     hash: string;
@@ -67,8 +79,9 @@ export default function Home() {
       console.error('Failed to copy text: ', err)
     }
   }
+
   return (
-    <BackgroundBeamsWithCollision className="flex flex-col px-10">
+    <Layout>
       <h2 className="relative z-20 text-5xl font-bold text-center text-black dark:text-white font-sans tracking-tight">
         URL <span className="text-blue-500 dark:text-purple-500">Chikito</span>
       </h2>
@@ -139,6 +152,6 @@ export default function Home() {
           Shorten another
         </button>
       </div>
-    </BackgroundBeamsWithCollision >
+    </Layout>
   );
 }

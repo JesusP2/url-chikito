@@ -3,7 +3,6 @@ import { PlaceholdersAndVanishInput } from './ui/placeholder-and-vanish-input';
 import { TypewriterEffectSmooth } from './ui/typewriter-effect';
 import { actions } from 'astro:actions';
 import { cn } from '../lib/utils';
-import crc32 from 'crc/crc32';
 import { useState } from 'react';
 import { Copy, Check } from "lucide-react"
 import { PUBLIC_URL } from 'astro:env/client';

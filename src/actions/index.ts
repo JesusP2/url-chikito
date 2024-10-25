@@ -42,11 +42,11 @@ export const server = {
               twitter: string | null;
             } = {} as any;
 
-            let desc = document.querySelector(`meta[name='description']`);
-            let og = document.querySelector(`meta[property='og:description']`);
+            let desc = document.querySelector(`meta[name='description']`) as any;
+            let og = document.querySelector(`meta[property='og:description']`) as any;
             let twitter = document.querySelector(
               `meta[property='twitter:description']`
-            );
+            ) as any;
 
             desc
               ? (descriptions.desc = desc.content)

@@ -76,10 +76,10 @@ export function PlaceholdersAndVanishInput({
             x: n,
             y: t,
             color: [
-              pixelData[e],
-              pixelData[e + 1],
-              pixelData[e + 2],
-              pixelData[e + 3],
+              pixelData[e] as number,
+              pixelData[e + 1] as number,
+              pixelData[e + 2] as number,
+              pixelData[e + 3] as number,
             ],
           });
         }
@@ -103,7 +103,7 @@ export function PlaceholdersAndVanishInput({
       requestAnimationFrame(() => {
         const newArr = [];
         for (let i = 0; i < newDataRef.current.length; i++) {
-          const current = newDataRef.current[i];
+          const current = newDataRef.current[i] as { x: number; y: number; r: number; color: string; };
           if (current.x < pos) {
             newArr.push(current);
           } else {

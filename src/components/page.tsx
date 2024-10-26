@@ -6,42 +6,20 @@ import { cn } from '../lib/utils';
 import { useState, type ReactNode } from 'react';
 import { Copy, Check } from "lucide-react"
 import { PUBLIC_URL } from 'astro:env/client';
-import { LinkPreview } from './ui/link-preview';
 
 const words = [
   {
-    text: "See",
-  },
-  {
-    text: "before",
-  },
-  {
-    text: "you",
-  },
-  {
-    text: "click:",
-  },
-  {
     text: "Simple",
-    className: "text-blue-500 dark:text-blue-500",
   },
   {
     text: "URL",
   },
   {
-    text: "shortener",
-  },
-  {
-    text: "with",
-  },
-  {
-    text: "link",
-  },
-  {
-    text: "preview.",
+    text: "shortener.",
     className: "text-blue-500 dark:text-blue-500",
   },
 ];
+
 const placeholders = [
   "www.youtube.com",
   "www.google.com",
@@ -86,8 +64,7 @@ export default function Home() {
         URL <span className="text-blue-500 dark:text-purple-500">Chikito</span>
       </h2>
       <div className="flex flex-col items-center my-6">
-        <TypewriterEffectSmooth words={words.slice(0, 5)} />
-        <TypewriterEffectSmooth words={words.slice(5)} />
+        <TypewriterEffectSmooth words={words} />
       </div>
 
       <form
@@ -138,19 +115,6 @@ export default function Home() {
             )}
           </button>
         </div>
-        <LinkPreview
-          url={`data:image/jpeg;base64,${previewData?.screenshot}`}
-          isStatic
-          imageSrc={`data:image/jpeg;base64,${previewData?.screenshot}`}
-          className="font-bold"
-        >
-          {`${PUBLIC_URL}/${previewData?.hash}`}
-        </LinkPreview>
-        <button
-          onClick={() => setPreviewData(null)}
-          className="inline-flex w-[200px] h-[42px] px-3 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-          Shorten another
-        </button>
       </div>
     </Layout>
   );

@@ -2,6 +2,7 @@ version: '3'
 
 services:
   astro:
+    env_file: ".env"
     build: .
     ports:
       - "4321:4321"
